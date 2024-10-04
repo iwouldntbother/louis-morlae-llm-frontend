@@ -114,13 +114,104 @@ const somethingWentWrong = () => {
     text: "Well, this is embarrassing, looks like something isn't going quite right. Check back in a bit :)",
   });
 };
+
+// LLM Logic
+
+const history: Ref<Array<{}>> = ref([
+  { role: 'assistant', content: 'What is your name?' },
+]);
+
+const getReply = (user_message: string) => {
+  history.value.push({ role: 'user', content: user_message });
+
+  const fetchMessages = async () => {
+    const { data, error } = await useAsyncData('fetchMessages', () =>
+      $fetch('http://127.0.0.1:5000/v1/chat/completions', {
+        method: 'POST',
+        body: JSON.stringify({
+          mode: 'chat',
+          character: 'The Machine',
+          messages: history,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    );
+
+    if (error.value) {
+      console.error(error);
+      somethingWentWrong();
+    } else {
+      console.log(data.value);
+      // history.value.push(data.value as Object);
+      console.log(history);
+    }
+  };
+
+  try {
+    const response = fetch('http://127.0.0.1:5000/v1/chat/completions', {
+      method: 'POST',
+      body: JSON.stringify({
+        mode:'chat',
+        character: 'The Machine',
+        messages: history,
+        stream: true,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+
+    // Read the response as a stream of data
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder("utf-8");
+    resultText.innerText = "";
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) {
+        break;
+      }
+      // Massage and parse the chunk of data
+      const chunk = decoder.decode(value);
+      const lines = chunk.split("\\n");
+      const parsedLines = lines
+        .map((line) => line.replace(/^data: /, "").trim()) // Remove the "data: " prefix
+        .filter((line) => line !== "" && line !== "[DONE]") // Remove empty lines and "[DONE]"
+        .map((line) => JSON.parse(line)); // Parse the JSON string
+
+      for (const parsedLine of parsedLines) {
+        const { choices } = parsedLine;
+        const { delta } = choices[0];
+        const { content } = delta;
+        // Update the UI with the new content
+        if (content) {
+          resultText.innerText += content;
+        }
+      }
+    }
+} catch() {
+	//...
+}
+
+};
+onMounted(() => {
+  getReply('hello.');
+  window.addEventListener('keydown', (e) => {
+    if (e.code == 'Escape') {
+      e.preventDefault();
+      console.log('refresh');
+    }
+  });
+});
 </script>
 
 <template>
   <div class="site-cont">
-    <div class="image image-1">This will be image 1</div>
+    <div class="image image-1">image_1</div>
     <ChatLog :messages="messages" />
-    <div class="image image-2">This will be image 2</div>
+    <div class="image image-2">image_2</div>
   </div>
 </template>
 
@@ -159,6 +250,7 @@ body {
   margin: 0;
   padding: 0;
   color: black;
+  overflow: none;
 }
 
 :root {
