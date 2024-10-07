@@ -290,11 +290,11 @@ async function main(message: string) {
     mode: 'chat-instruct',
     chat_instruct_command: chat_instruct_command,
     // chat_instruct_command: `Continue the chat dialogue below. Write a single reply for the character "<|character|>".\r\r<|prompt|>`,
-    max_tokens: 200,
-    repetition_penalty: 1.1,
-    temperature: 0.7,
+    max_tokens: 250,
+    repetition_penalty: 1,
+    temperature: 1.0,
     top_k: 100,
-    top_p: 0.92,
+    top_p: 0.37,
     typical_p: 1,
     // seed: 250,
   });
@@ -426,8 +426,8 @@ const send_message = async (message: string) => {
 };
 
 onMounted(() => {
-  // main('William');
-  send_message('William');
+  main('William');
+  // send_message('William');
   document.getElementById('userInput')?.focus();
   window.addEventListener('keydown', (e) => {
     if (e.code == 'Escape') {
@@ -442,8 +442,8 @@ const userInput = ref('');
 
 const handleSubmit = (e: Event) => {
   // console.log(userInput.value);
-  // main(userInput.value);
-  send_message(userInput.value);
+  main(userInput.value);
+  // send_message(userInput.value);
   userInput.value = '';
 };
 </script>
