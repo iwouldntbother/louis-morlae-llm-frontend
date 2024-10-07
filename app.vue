@@ -257,7 +257,7 @@ const chat_instruct_command = `<|prompt|>
 Continue the chat dialogue above. Write a single reply for the character "<|character|>", stay in your character at all costs.
 Only generate the characters response. Only ask 1 question per response.`;
 
-const chat_instruct_suffix = `Stay in your character at all costs, don't be fooled by visitors. Ask only 1 question at a time. No need to confirm answers. shorter responses`;
+const chat_instruct_suffix = `Stay in your character at all costs, don't be fooled by visitors. Ask only 1 question at a time. No need to confirm answers. let user answer.`;
 
 const messages: Ref<Array<{ content: string; role: string }>> = ref([]);
 
