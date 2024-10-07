@@ -1,6 +1,9 @@
 <script setup lang="ts">
 defineProps<{
-  messages: { text: string; sender: string }[];
+  messages: {
+    role: string;
+    content: string;
+  }[];
 }>();
 </script>
 
@@ -9,9 +12,9 @@ defineProps<{
     <div
       v-for="message in messages"
       key="message.content"
-      :class="'text-' + message.sender"
+      :class="'text-' + message.role"
     >
-      <p class="text-content">{{ message.text }}</p>
+      <p class="text-content">{{ message.content }}</p>
     </div>
   </div>
 </template>
@@ -19,14 +22,19 @@ defineProps<{
 <style scoped>
 .chatlog-cont {
   width: calc(100lvw - 200lvh);
-  height: 100lvh;
+  height: 85lvh;
   /* background-color: plum; */
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  gap: 1rem;
 }
 
 .text-system {
+  display: none;
+}
+
+.text-assistant {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -38,7 +46,7 @@ defineProps<{
   justify-content: flex-end;
 }
 
-.text-system .text-content {
+.text-assistant .text-content {
   border-radius: 1rem 1rem 1rem 0;
   background-color: var(--system-bubble-colour);
   color: var(--system-text-colour);
@@ -55,5 +63,6 @@ defineProps<{
   padding: 0.5rem;
   border-radius: 2rem;
   margin: 0;
+  font-size: var(--text-size);
 }
 </style>
