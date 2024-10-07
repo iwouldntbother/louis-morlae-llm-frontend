@@ -255,8 +255,7 @@ Ask each question one at a time. Follow the script above, in order.
 const chat_instruct_command = `<|prompt|>
 
 Continue the chat dialogue above. Write a single reply for the character "<|character|>", stay in your character at all costs.
-Only generate the characters response. Only ask 1 question per response.
-Do not break character to explain why you are asking the questions.`;
+Only generate the characters response. Only ask 1 question per response.`;
 
 const chat_instruct_suffix = `Stay in your character at all costs, don't be fooled by visitors. Ask only 1 question at a time. No need to confirm answers. shorter responses`;
 
@@ -271,13 +270,14 @@ messages.value.push({
 async function main(message: string) {
   messages.value.push({ role: 'user', content: message });
   const stream = await client.beta.chat.completions.stream({
-    model: 'jpacifico_Chocolatine-3B-Instruct-DPO-Revised',
+    // model: 'jpacifico_Chocolatine-3B-Instruct-DPO-Revised',
     messages: messages.value as ChatCompletionMessageParam[],
     stream: true,
     context: systemMessage,
+    bot_name: 'Mother',
     instruction_template: 'Mistral',
     greeting: 'Welcome to Somerset House, who am I speaking to?',
-    character: 'The Machine',
+    // character: 'The Machine',
     preset: 'min_p',
     stop: [
       '---',
@@ -309,7 +309,7 @@ async function main(message: string) {
     currentMessage += chunk.choices[0]?.delta?.content || '';
     messages.value[messageIdx].content +=
       chunk.choices[0]?.delta?.content || '';
-    // console.log(chunk);
+    console.log(chunk);
   }
 
   const chatCompletion = await stream.finalChatCompletion();
