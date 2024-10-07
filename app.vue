@@ -424,8 +424,8 @@ const send_message = async (message: string) => {
 };
 
 onMounted(() => {
-  // main('William');
-  send_message('William');
+  main('William');
+  // send_message('William');
   document.getElementById('userInput')?.focus();
   window.addEventListener('keydown', (e) => {
     if (e.code == 'Escape') {
@@ -440,8 +440,8 @@ const userInput = ref('');
 
 const handleSubmit = (e: Event) => {
   // console.log(userInput.value);
-  // main(userInput.value);
-  send_message(userInput.value);
+  main(userInput.value);
+  // send_message(userInput.value);
   userInput.value = '';
 };
 </script>
