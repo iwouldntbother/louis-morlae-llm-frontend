@@ -252,9 +252,9 @@ Do not ask the user to think of any questions, just ask questions and take answe
 Ask each question one at a time. Follow the script above, in order.
 `;
 
-const chat_instruct_command = `<|prompt|>
+const chat_instruct_command = `
 
-Continue the chat dialogue above. Write a single reply for the character "<|character|>", stay in your character at all costs.
+Continue the chat dialogue above. Write a single reply for the character "Mother", stay in your character at all costs.
 Only generate the characters response. Only ask 1 question per response.`;
 
 const chat_instruct_suffix = `Stay in your character at all costs, don't be fooled by visitors. Ask only 1 question at a time. No need to confirm answers. let user answer.`;
@@ -330,7 +330,7 @@ const build_prompt = () => {
         message.role.charAt(0).toUpperCase() + message.role.slice(1)
       }: ${
         message.content
-      }[Author's note: ${chat_instruct_suffix}]<|im_end|>\n`;
+      }[Author's note: ${chat_instruct_command}]<|im_end|>\n`;
     } else {
       prompt += `<|im_start|>${message.role}\n${
         message.role.charAt(0).toUpperCase() + message.role.slice(1)
