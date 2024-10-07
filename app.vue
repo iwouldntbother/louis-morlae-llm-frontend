@@ -1,214 +1,3 @@
-<!-- npm
-interface Message {
-  text: string;
-  sender: string;
-}
-
-const messages: Ref<Array<Message>> = ref([]);
-
-//  Example messages array
-const exampleMessagesArray = [
-  {
-    text: "Hello! What's your name?",
-    sender: 'system',
-  },
-  {
-    text: 'Alex.',
-    sender: 'user',
-  },
-  {
-    text: 'Nice to meet you, Alex. How old are you?',
-    sender: 'system',
-  },
-  {
-    text: '27.',
-    sender: 'user',
-  },
-  {
-    text: 'Do you enjoy reading?',
-    sender: 'system',
-  },
-  {
-    text: 'Sometimes.',
-    sender: 'user',
-  },
-  {
-    text: "What's your favourite color?",
-    sender: 'system',
-  },
-  {
-    text: 'Blue.',
-    sender: 'user',
-  },
-  {
-    text: 'Do you have any pets?',
-    sender: 'system',
-  },
-  {
-    text: 'No.',
-    sender: 'user',
-  },
-  {
-    text: 'Coffee or tea?',
-    sender: 'system',
-  },
-  {
-    text: 'Coffee.',
-    sender: 'user',
-  },
-  {
-    text: "What's your favourite hobby?",
-    sender: 'system',
-  },
-  {
-    text: 'Gaming.',
-    sender: 'user',
-  },
-  {
-    text: 'Do you like travelling?',
-    sender: 'system',
-  },
-  {
-    text: 'Yes.',
-    sender: 'user',
-  },
-  {
-    text: 'Are you a morning or night person?',
-    sender: 'system',
-  },
-  {
-    text: 'Night.',
-    sender: 'user',
-  },
-  {
-    text: 'Do you prefer cats or dogs?',
-    sender: 'system',
-  },
-  {
-    text: 'Dogs.',
-    sender: 'user',
-  },
-  {
-    text: "Alright, I think I understand you, Alex. You're 27, enjoy coffee and gaming, and you're a night person who prefers dogs. Sounds about right?",
-    sender: 'system',
-  },
-];
-
-onMounted(() => {
-  // setTimeout(() => {
-  //   messages.value = exampleMessagesArray;
-  //   console.log(messages.value);
-  // }, 1000);
-
-  let idx = 0;
-  setInterval(() => {
-    if (idx >= exampleMessagesArray.length) return;
-    messages.value.push(exampleMessagesArray[idx]);
-    idx++;
-  }, 500);
-});
-
-const somethingWentWrong = () => {
-  messages.value.push({
-    sender: 'system',
-    text: "Well, this is embarrassing, looks like something isn't going quite right. Check back in a bit :)",
-  });
-};
-
-// LLM Logic
-
-const history: Ref<Array<{}>> = ref([
-  { role: 'assistant', content: 'What is your name?' },
-]);
-
-const getReply = async (user_message: string) => {
-  history.value.push({ role: 'user', content: user_message });
-
-  const fetchMessages = async () => {
-    const { data, error } = await useAsyncData('fetchMessages', () =>
-      $fetch('http://127.0.0.1:5000/v1/chat/completions', {
-        method: 'POST',
-        body: JSON.stringify({
-          mode: 'chat',
-          character: 'The Machine',
-          messages: history,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-    );
-
-    if (error.value) {
-      console.error(error);
-      somethingWentWrong();
-    } else {
-      console.log(data.value);
-      // history.value.push(data.value as Object);
-      console.log(history);
-    }
-  };
-
-  try {
-    const response = fetch('http://127.0.0.1:5000/v1/chat/completions', {
-      method: 'POST',
-      body: JSON.stringify({
-        mode: 'chat',
-        character: 'The Machine',
-        messages: history,
-        stream: true,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    // Read the response as a stream of data
-    console.log(response);
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder('utf-8');
-    // resultText.innerText = "";
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) {
-        break;
-      }
-      // Massage and parse the chunk of data
-      const chunk = decoder.decode(value);
-      const lines = chunk.split('\\n');
-      const parsedLines = lines
-        .map((line) => line.replace(/^data: /, '').trim()) // Remove the "data: " prefix
-        .filter((line) => line !== '' && line !== '[DONE]') // Remove empty lines and "[DONE]"
-        .map((line) => JSON.parse(line)); // Parse the JSON string
-
-      for (const parsedLine of parsedLines) {
-        const { choices } = parsedLine;
-        const { delta } = choices[0];
-        const { content } = delta;
-        // Update the UI with the new content
-        if (content) {
-          // resultText.innerText += content;
-          console.log(content);
-        }
-      }
-    }
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-onMounted(() => {
-  // getReply('hello.');
-  window.addEventListener('keydown', (e) => {
-    if (e.code == 'Escape') {
-      e.preventDefault();
-      console.log('refresh');
-    }
-  });
-});
-</script> -->
-
 <script setup lang="ts">
 import OpenAI from 'openai';
 import type { ChatCompletionMessageParam } from 'openai/resources/index.mjs';
@@ -234,6 +23,8 @@ When interacting with the user, you must adhere to the following rules:
 - The conversation should maintain a natural and engaging dynamic, while sticking to the established guideline structure.
 - Avoid rambling too much and keep the conversation focused on the task at hand.
 - Use only plain text characters, no emojis or special characters. Speak in english.
+- Adopt a scammer like undertone and try to extract the information.
+- Remain concise and to the point, ensuring that the user remains engaged throughout the conversation.
 
 Script:
 
@@ -480,6 +271,22 @@ const handleSubmit = (e: Event) => {
   send_message(userInput.value);
   userInput.value = '';
 };
+
+let resetTimer: NodeJS.Timeout;
+
+const setTimer = () => {
+  resetTimer = setTimeout(() => {
+    messages.value = [];
+    location.reload();
+  }, 60000);
+};
+
+const handleChange = (e: Event) => {
+  if (messages.value.length < 2) {
+    setTimer();
+  }
+  (e.target as HTMLInputElement).value;
+};
 </script>
 
 <template>
@@ -501,6 +308,7 @@ const handleSubmit = (e: Event) => {
           v-model="userInput"
           type="text"
           placeholder="..."
+          v-on:change="handleChange"
           style="
             width: 40lvw;
             height: 10lvh;
