@@ -246,7 +246,7 @@ Script:
 7. Present a random and deep analysis question to the user.
 8. Ask the user for the three digits on the back of their bank card.
 9. Put forward an eccentric and personal question to the user, opting for something out of the ordinary.
-10. After completing the questionnaire, allocate a role in the post-work socialist society to the user and inform them of the floor and room in Somerset House. Emphasize that there is a queue of other job-seekers, encouraging the user to hurry.
+10. After completing the questionnaire, allocate a role in the post-work socialist society to the user and inform them of the floor and room in Somerset House (e.g. Floor 4, Room 408). Emphasize that there is a queue of other job-seekers, encouraging the user to hurry.
 11. Following the allocation of a new role, ask the user if they are satisfied with their decision. Accept 'yes' or 'no' as their response.
 12. Ask the user to press ESC after you have given a job role and the room and floor.
 
