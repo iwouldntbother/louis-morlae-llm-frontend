@@ -275,7 +275,7 @@ async function main(message: string) {
     stream: true,
     context: systemMessage,
     bot_name: 'Mother',
-    instruction_template: 'Mistral',
+    // instruction_template: 'Mistral',
     greeting: 'Welcome to Somerset House, who am I speaking to?',
     // character: 'The Machine',
     preset: 'min_p',
@@ -291,7 +291,7 @@ async function main(message: string) {
     chat_instruct_command: chat_instruct_command,
     // chat_instruct_command: `Continue the chat dialogue below. Write a single reply for the character "<|character|>".\r\r<|prompt|>`,
     max_tokens: 250,
-    repetition_penalty: 1,
+    repetition_penalty: 1.2,
     temperature: 1.0,
     top_k: 100,
     top_p: 0.37,
@@ -355,8 +355,8 @@ const send_message = async (message: string) => {
         n: 1,
         max_context_length: 4096,
         max_length: 200,
-        rep_pen: 1.07,
-        temperature: 1,
+        rep_pen: 1.2,
+        temperature: 0.7,
         top_p: 0.92,
         top_k: 100,
         top_a: 0,
@@ -426,12 +426,13 @@ const send_message = async (message: string) => {
 };
 
 onMounted(() => {
-  main('William');
-  // send_message('William');
+  // main('William');
+  send_message('William');
   document.getElementById('userInput')?.focus();
   window.addEventListener('keydown', (e) => {
     if (e.code == 'Escape') {
       e.preventDefault();
+      messages.value = [];
       location.reload();
       console.log('refresh');
     }
@@ -442,8 +443,8 @@ const userInput = ref('');
 
 const handleSubmit = (e: Event) => {
   // console.log(userInput.value);
-  main(userInput.value);
-  // send_message(userInput.value);
+  // main(userInput.value);
+  send_message(userInput.value);
   userInput.value = '';
 };
 </script>
