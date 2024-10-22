@@ -14,7 +14,7 @@ defineProps<{
       key="message.content"
       :class="'text-' + message.role"
     >
-      <p class="text-content">{{ message.content }}</p>
+      <p class="outdent text-content">{{ message.content }}</p>
     </div>
   </div>
 </template>
@@ -60,8 +60,9 @@ defineProps<{
 
 .text-content {
   max-width: 80%;
-  padding: 0.5rem;
-  border-radius: 2rem;
+  /* padding: 0.5rem; */
+  padding: 15px;
+  border-radius: 20px;
   margin: 0;
   font-size: var(--text-size);
 }
