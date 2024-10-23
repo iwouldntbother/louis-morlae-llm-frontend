@@ -147,7 +147,7 @@ const send_message = async (message: string) => {
         max_context_length: 4096,
         max_length: 200,
         rep_pen: 1.2,
-        temperature: 0.7,
+        temperature: 0.95,
         top_p: 0.92,
         top_k: 100,
         top_a: 0,
