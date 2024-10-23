@@ -1,0 +1,11 @@
+[Unit]
+Description=Start X Service
+After=api.service webserver.service
+
+[Service]
+ExecStart=/home/admin/start-x.sh
+Restart=always
+User=admin
+
+[Install]
+WantedBy=multi-user.target

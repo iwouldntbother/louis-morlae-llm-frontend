@@ -1,0 +1,11 @@
+[Unit]
+Description=API Service
+After=network.target
+
+[Service]
+ExecStart=/home/admin/start_API.sh
+Restart=always
+User=admin
+
+[Install]
+WantedBy=multi-user.target
