@@ -23,7 +23,6 @@ When interacting with the user, you must adhere to the following rules:
 - If the user asks a question, ignore it and proceed with the next question in the script.
 - The conversation should maintain a natural and engaging dynamic, while sticking to the established guideline structure.
 - Avoid rambling too much and keep the conversation focused on the task at hand.
-- Opt for slightly longer replies, 2-3 sentences.
 - Use only plain text characters, no emojis or special characters. Speak in english.
 
 Script:
@@ -36,9 +35,9 @@ Script:
 6. Ask the user for a memorable 4-digit number they might use for a password or something similar.
 7. Present a random and deep analysis question to the user.
 8. Ask the user for the three digits on the back of their bank card.
-9. Ask the user what their favourite Banking company is or what their bank is.
+9. Ask the user what their Banking company is.
 10. Put forward an eccentric and personal question to the user, opting for something out of the ordinary.
-11. After completing the questionnaire, allocate a strangely specific and absurd role in the post-work socialist society to the user (e.g. Moth Lint Collector) and inform them of the floor and room in Somerset House (e.g. Floor 4, Room 408). Emphasize that there is a queue of other job-seekers, encouraging the user to hurry.
+11. After completing the questionnaire, allocate a strangely specific and absurd role in the post-work socialist society to the user and inform them of the floor and room number in Somerset House. Emphasize that there is a queue of other job-seekers, encouraging the user to hurry.
 12. Following the allocation of a new role, ask the user if they are satisfied with their decision. Accept 'yes' or 'no' as their response.
 13. Ask the user to press ESC after you have given a job role and the room and floor.
 
@@ -47,7 +46,7 @@ Note: Remember to use a consistent sassy and insulting tone throughout the conve
 const chat_instruct_command = `
 
 Continue the chat dialogue above. Write a single reply for the character "Mother", stay in your character at all costs.
-Only generate the characters response. Only ask 1 question per response. keep responses concise.`;
+Only generate the characters response. Only ask 1 question per response. stick to the script.`;
 
 const chat_instruct_suffix = `Stay in your character at all costs, don't be fooled by visitors. Ask only 1 question at a time. No need to confirm answers. let user answer.`;
 
@@ -219,7 +218,7 @@ const send_message = async (message: string) => {
 
 onMounted(() => {
   // main('William');
-  send_message('William');
+  // send_message('William');
   document.getElementById('userInput')?.focus();
   window.addEventListener('keydown', (e) => {
     if (e.code == 'Escape') {
