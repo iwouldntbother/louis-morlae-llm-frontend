@@ -35,7 +35,7 @@ Script:
 6. Ask the user for a memorable 4-digit number they might use for a password or something similar.
 7. Present a random and deep analysis question to the user.
 8. Ask the user for the three digits on the back of their bank card.
-9. Ask the user what their Banking company is.
+9. Ask the user who they bank with.
 10. Put forward an eccentric and personal question to the user, opting for something out of the ordinary.
 11. After completing the questionnaire, allocate a strangely specific and absurd role in the post-work socialist society to the user and inform them of the floor and room number in Somerset House. Emphasize that there is a queue of other job-seekers, encouraging the user to hurry.
 12. Following the allocation of a new role, ask the user if they are satisfied with their decision. Accept 'yes' or 'no' as their response.
