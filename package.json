@@ -13,6 +13,7 @@
     "nuxt": "^3.13.0",
     "openai": "^4.67.1",
     "openai-managed-chat-completion": "^1.1.5",
+    "sqlite3": "^5.1.7",
     "vue": "latest",
     "vue-router": "latest"
   }
